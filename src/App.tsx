@@ -7,15 +7,14 @@ import Projects from './components/sections/Projects'
 import About from './components/sections/About'
 import Contact from './components/sections/Contact'
 import Resume from './pages/Resume'
+import ProjectDetail from './pages/ProjectDetail'
+import PhaseDetail from './pages/PhaseDetail'
 
 function HomePage() {
   return (
     <>
       <Hero />
       <Skills />
-      <Projects />
-      <About />
-      <Contact />
     </>
   )
 }
@@ -27,6 +26,11 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/about/:id" element={<PhaseDetail />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/resume" element={<Resume />} />
         </Routes>
       </main>

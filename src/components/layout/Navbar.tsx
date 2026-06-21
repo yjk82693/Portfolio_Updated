@@ -1,21 +1,42 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Button } from 'antd'
+import { Button, Drawer } from 'antd'
+import { MenuOutlined } from '@ant-design/icons'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
   const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
     window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
+  const navLinkStyle = (path: string) => ({
+    color: location.pathname === path ? '#4A90D9' : '#94A3B8',
+    fontSize: 15,
+  })
+
+  const navLinks = (
+    <>
+      <Link to="/projects" style={navLinkStyle('/projects')} onClick={() => setDrawerOpen(false)}>Projects</Link>
+      <Link to="/about" style={navLinkStyle('/about')} onClick={() => setDrawerOpen(false)}>About</Link>
+      <Link to="/contact" style={navLinkStyle('/contact')} onClick={() => setDrawerOpen(false)}>Contact</Link>
+      <Link to="/resume" onClick={() => setDrawerOpen(false)}>
+        <Button type="primary" style={{ backgroundColor: '#4A90D9', borderColor: '#4A90D9' }}>
+          Resume
+        </Button>
+      </Link>
+    </>
+  )
 
   return (
     <nav style={{
@@ -28,47 +49,39 @@ export default function Navbar() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '0 48px',
-      backgroundColor: scrolled ? '#111827' : 'transparent',
-      borderBottom: scrolled ? '1px solid #1E2A3A' : 'none',
+      padding: '0 24px',
+      backgroundColor: scrolled || location.pathname !== '/' ? '#111827' : 'transparent',
+      borderBottom: scrolled || location.pathname !== '/' ? '1px solid #1E2A3A' : 'none',
       transition: 'all 0.3s ease',
     }}>
       <Link to="/" style={{ fontSize: 20, fontWeight: 700, color: '#4A90D9' }}>
         YK
       </Link>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-        {location.pathname === '/' && (
-          <>
-            <span
-              onClick={() => scrollTo('projects')}
-              style={{ color: '#94A3B8', cursor: 'pointer', fontSize: 15 }}
-            >
-              Projects
-            </span>
-            <span
-              onClick={() => scrollTo('about')}
-              style={{ color: '#94A3B8', cursor: 'pointer', fontSize: 15 }}
-            >
-              About
-            </span>
-            <span
-              onClick={() => scrollTo('contact')}
-              style={{ color: '#94A3B8', cursor: 'pointer', fontSize: 15 }}
-            >
-              Contact
-            </span>
-          </>
-        )}
-        <Link to="/resume">
-          <Button
-            type="primary"
-            style={{ backgroundColor: '#4A90D9', borderColor: '#4A90D9' }}
+      {isMobile ? (
+        <>
+          <MenuOutlined
+            style={{ color: '#F1F5F9', fontSize: 22, cursor: 'pointer' }}
+            onClick={() => setDrawerOpen(true)}
+          />
+          <Drawer
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+            placement="right"
+            styles={{
+              body: { backgroundColor: '#111827', display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 32 },
+              header: { backgroundColor: '#111827', borderBottom: '1px solid #1E2A3A' },
+            }}
+            closeIcon={<span style={{ color: '#F1F5F9' }}>✕</span>}
           >
-            Resume
-          </Button>
-        </Link>
-      </div>
+            {navLinks}
+          </Drawer>
+        </>
+      ) : (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
+          {navLinks}
+        </div>
+      )}
     </nav>
   )
 }
