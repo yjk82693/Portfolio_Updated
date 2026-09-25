@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { projects } from '../../data/projects'
-import type { Project } from '../../data/projects'
+import type { Project, Category } from '../../data/projects'
 
-type FilterCategory = 'all' | 'frontend' | 'fullstack' | 'backend' | 'game' | 'tools'
+type FilterCategory = 'all' | Category
 
 const filters: { label: string; value: FilterCategory }[] = [
   { label: 'all', value: 'all' },
@@ -12,6 +12,7 @@ const filters: { label: string; value: FilterCategory }[] = [
   { label: 'backend', value: 'backend' },
   { label: 'game', value: 'game' },
   { label: 'tools', value: 'tools' },
+  { label: 'hackathon', value: 'hackathon' },
 ]
 
 const categoryColors: Record<string, string> = {
@@ -20,6 +21,7 @@ const categoryColors: Record<string, string> = {
   backend: '#2D7A4F',
   game: '#9333EA',
   tools: '#D97706',
+  hackathon: '#DC2626',
 }
 
 const categoryBg: Record<string, string> = {
@@ -28,26 +30,31 @@ const categoryBg: Record<string, string> = {
   backend: '#F0FDF4',
   game: '#FAF5FF',
   tools: '#FFF7ED',
+  hackathon: '#FEF2F2',
+}
+
+function projectCategories(project: Project): Category[] {
+  return Array.isArray(project.category) ? project.category : [project.category]
+}
+
+function matchesFilter(project: Project, filter: FilterCategory): boolean {
+  if (filter === 'all') return true
+  const cats = projectCategories(project)
+  if (cats.includes(filter)) return true
+  if (filter === 'frontend' && cats.includes('fullstack')) return true
+  if (filter === 'backend' && cats.includes('fullstack')) return true
+  return false
 }
 
 function getFilteredCount(category: FilterCategory): number {
-  if (category === 'all') return projects.length
-  if (category === 'frontend') return projects.filter(p => p.category === 'frontend' || p.category === 'fullstack').length
-  if (category === 'backend') return projects.filter(p => p.category === 'backend' || p.category === 'fullstack').length
-  return projects.filter(p => p.category === category).length
+  return projects.filter(p => matchesFilter(p, category)).length
 }
 
 export default function Gallery() {
   const [active, setActive] = useState<FilterCategory>('all')
   const navigate = useNavigate()
 
-  const filtered = active === 'all'
-    ? projects
-    : projects.filter(p => {
-        if (active === 'frontend') return p.category === 'frontend' || p.category === 'fullstack'
-        if (active === 'backend') return p.category === 'backend' || p.category === 'fullstack'
-        return p.category === active
-      })
+  const filtered = projects.filter(p => matchesFilter(p, active))
 
   return (
     <div style={{
@@ -76,7 +83,6 @@ export default function Gallery() {
           Selected works
         </h1>
 
-        {/* Filter bar */}
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 40 }}>
           {filters.map(f => (
             <button
@@ -112,7 +118,6 @@ export default function Gallery() {
           ))}
         </div>
 
-        {/* Grid */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
@@ -134,8 +139,10 @@ export default function Gallery() {
 
 function ProjectCard({ project, onClick }: { project: Project; onClick: () => void }) {
   const [hovered, setHovered] = useState(false)
-  const tagColor = categoryColors[project.category] ?? '#64748B'
-  const thumbBg = categoryBg[project.category] ?? '#F8F9FA'
+  const cats = projectCategories(project)
+  const primaryCat = cats[0]
+  const tagColor = categoryColors[primaryCat] ?? '#64748B'
+  const thumbBg = categoryBg[primaryCat] ?? '#F8F9FA'
 
   return (
     <div
@@ -154,7 +161,6 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
         flexDirection: 'column',
       }}
     >
-      {/* Thumbnail */}
       <div style={{
         height: 160,
         backgroundColor: thumbBg,
@@ -178,12 +184,11 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
             opacity: 0.4,
             textTransform: 'uppercase',
           }}>
-            {project.category}
+            {primaryCat}
           </span>
         )}
       </div>
 
-      {/* Content */}
       <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
         <div style={{
           display: 'flex',
@@ -194,19 +199,25 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
           <p style={{ color: '#0F172A', fontSize: 15, fontWeight: 600, margin: 0 }}>
             {project.title}
           </p>
-          <span style={{
-            color: tagColor,
-            fontSize: 10,
-            letterSpacing: 1,
-            border: `1px solid ${tagColor}`,
-            borderRadius: 3,
-            padding: '1px 6px',
-            marginLeft: 8,
-            flexShrink: 0,
-            opacity: 0.8,
-          }}>
-            {project.category}
-          </span>
+          <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'flex-end', marginLeft: 8 }}>
+            {cats.map(cat => (
+              <span
+                key={cat}
+                style={{
+                  color: categoryColors[cat] ?? '#64748B',
+                  fontSize: 10,
+                  letterSpacing: 1,
+                  border: `1px solid ${categoryColors[cat] ?? '#64748B'}`,
+                  borderRadius: 3,
+                  padding: '1px 6px',
+                  flexShrink: 0,
+                  opacity: 0.8,
+                }}
+              >
+                {cat}
+              </span>
+            ))}
+          </div>
         </div>
 
         <p style={{
@@ -225,12 +236,13 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
         </p>
 
         <div style={{ display: 'flex', gap: 16, marginTop: 'auto' }}>
-          {project.screenshots && (
+          {(project.screenshots || project.screenshotGroups) && (
             <span style={{ color: '#4A90D9', fontSize: 12, letterSpacing: 1 }}>
               step inside →
             </span>
           )}
           {project.demo && (
+            
             <a
               href={project.demo}
               target="_blank"

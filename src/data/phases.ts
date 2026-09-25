@@ -15,27 +15,27 @@ export type Phase = {
 
 export const phases: Phase[] = [
   {
-    id: 'youth',
-    number: 1,
-    romanNumeral: 'I',
-    title: 'Youth',
-    blurb: 'Where it began',
-    yearRange: '2006 – 2016',
-    slides: [
-      {
-        text: 'Growing up in Seoul, I was like a frog in a well — my small neighborhood was the whole world. Familiar streets, familiar faces. I never thought much beyond them. Then, unexpectedly, my parents told me I would be going to the United States. Not with them. Alone.',
-      },
-      {
-        text: 'Three months in North Carolina, living with a host family, navigating a world where I barely understood the language. The unfamiliar customs were overwhelming at first. But over time, the loneliness gave way to curiosity. I came back to Korea changed — though still uncertain whether I wanted to do it again.',
-      },
-      {
-        text: 'The following year, my family and I moved together to Williamsburg, Virginia. This time felt different. With them beside me, I could actually look around. We traveled across North America, and the vastness of it left a lasting impression — transforming my initial reluctance into a genuine appreciation for how much world existed beyond what I\'d known.',
-      },
-      {
-        text: 'Even after returning to Korea, the fascination didn\'t fade — it grew. I chose to attend an international school in Singapore, immersing myself in yet another culture, another tapestry of people and ideas. Each experience pushed my worldview further outward. I became someone who sought the unknown rather than shied away from it.',
-      },
-    ],
-  },
+  id: 'youth',
+  number: 1,
+  romanNumeral: 'I',
+  title: 'Youth',
+  blurb: 'Where it began',
+  yearRange: '2006 – 2016',
+  slides: [
+    {
+      image: '/phases/youth/slide1.jpg',
+      text: 'Growing up in Seoul, I was like the frog in the well — my small neighborhood was my whole world. Familiar streets, familiar faces, school, home, repeat. I didn\'t know how small that world was until my parents told me I\'d be spending the summer in the United States. Not with them. Alone. All I could think was: America is enormous, and I was just a frog about to leave the well for the first time.',
+    },
+    {
+      image: '/phases/youth/slide2.jpg',
+      text: 'I landed in North Carolina and moved in with a host family for three months, barely understanding the language. Nerf guns, Lego, Nintendo — things I\'d never really had at home, but the neighborhood kids were obsessed with them too. Sharing the same hobbies gave us a way to connect even when the words didn\'t. Slowly the walls came down — I started joining in, laughing at jokes I half-understood, opening up more than I expected to.',
+    },
+    {
+      image: '/phases/youth/slide3.jpg',
+      text: 'When the three months ended, it felt like that chapter was closed — a good experience, but a finished one. I went back to Korea and didn\'t expect to return. Then, a year later, the chance came again: this time to move with my family to Williamsburg, Virginia. I hesitated. Part of me still treated that first trip as my one shot, something already used up. But once we were there, everything opened up. New York City. Boston and its universities. Orlando, Florida — Disney World, Universal Studios, Legoland, SeaWorld. Even Alaska. Each place added a piece I hadn\'t known was missing, and the passion to see more only grew. My pull toward the U.S. wasn\'t fading — it was expanding. That was when I decided, for real this time: I would come back.',
+    },
+  ],
+},
   {
     id: 'highschool',
     number: 2,

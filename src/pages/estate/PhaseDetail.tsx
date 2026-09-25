@@ -66,7 +66,7 @@ export default function PhaseDetail() {
         <div style={{ marginBottom: 0 }}>
           <ImageCarousel
             images={slide.image ? [slide.image] : []}
-            height={280}
+            height={1000}
           />
         </div>
 

@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { projects } from '../../data/projects'
+import type { Category } from '../../data/projects'
 import ImageCarousel from '../../components/ui/ImageCarousel'
+import LayeredScreenshots from '../../components/ui/LayeredScreenShots'
 
 const categoryColors: Record<string, string> = {
   frontend: '#4A90D9',
@@ -8,6 +10,11 @@ const categoryColors: Record<string, string> = {
   backend: '#2D7A4F',
   game: '#9333EA',
   tools: '#D97706',
+  hackathon: '#DC2626',
+}
+
+function projectCategories(category: Category | Category[]): Category[] {
+  return Array.isArray(category) ? category : [category]
 }
 
 export default function ProjectDetail() {
@@ -31,7 +38,10 @@ export default function ProjectDetail() {
   }
 
   const screenshots = project.screenshots ?? []
-  const tagColor = categoryColors[project.category] ?? '#64748B'
+  const screenshotGroups = project.screenshotGroups ?? []
+  const cats = projectCategories(project.category)
+  const primaryCat = cats[0]
+  const tagColor = categoryColors[primaryCat] ?? '#64748B'
   const prevProject = project.evolvedFrom ? projects.find(p => p.slug === project.evolvedFrom) : null
   const nextProject = project.evolvedInto ? projects.find(p => p.slug === project.evolvedInto) : null
 
@@ -66,17 +76,24 @@ export default function ProjectDetail() {
           <h1 style={{ color: '#0F172A', fontSize: 32, fontWeight: 700, margin: 0 }}>
             {project.title}
           </h1>
-          <span style={{
-            color: tagColor,
-            fontSize: 11,
-            letterSpacing: 2,
-            border: `1px solid ${tagColor}`,
-            borderRadius: 3,
-            padding: '2px 8px',
-            opacity: 0.8,
-          }}>
-            {project.category.toUpperCase()}
-          </span>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            {cats.map(cat => (
+              <span
+                key={cat}
+                style={{
+                  color: categoryColors[cat] ?? '#64748B',
+                  fontSize: 11,
+                  letterSpacing: 2,
+                  border: `1px solid ${categoryColors[cat] ?? '#64748B'}`,
+                  borderRadius: 3,
+                  padding: '2px 8px',
+                  opacity: 0.8,
+                }}
+              >
+                {cat.toUpperCase()}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Description */}
@@ -160,11 +177,19 @@ export default function ProjectDetail() {
           </div>
         ) : (
           <div style={{ marginBottom: 40 }}>
-            <ImageCarousel
-              screenshots={screenshots}
-              height={320}
-              category={project.category}
-            />
+            {screenshotGroups.length > 0 ? (
+              <LayeredScreenshots
+                groups={screenshotGroups}
+                height={320}
+                category={primaryCat}
+              />
+            ) : (
+              <ImageCarousel
+                screenshots={screenshots}
+                height={320}
+                category={primaryCat}
+              />
+            )}
           </div>
         )}
 
