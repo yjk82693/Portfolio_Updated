@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { projects } from '../../data/projects'
 import type { Category } from '../../data/projects'
 import ImageCarousel from '../../components/ui/ImageCarousel'
-import LayeredScreenshots from '../../components/ui/LayeredScreenShots'
+import LayeredScreenshots from '../../components/ui/LayeredScreenshots'
 
 const categoryColors: Record<string, string> = {
   frontend: '#4A90D9',
@@ -41,7 +41,6 @@ export default function ProjectDetail() {
   const screenshotGroups = project.screenshotGroups ?? []
   const cats = projectCategories(project.category)
   const primaryCat = cats[0]
-  const tagColor = categoryColors[primaryCat] ?? '#64748B'
   const prevProject = project.evolvedFrom ? projects.find(p => p.slug === project.evolvedFrom) : null
   const nextProject = project.evolvedInto ? projects.find(p => p.slug === project.evolvedInto) : null
 
