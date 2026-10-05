@@ -21,6 +21,14 @@ const pageIntros: Record<string, string> = {
 const YES_WORDS = ['yes', 'yeah', 'yep', 'yup', 'sure', 'ok', 'okay', 'please', 'yes please', 'go ahead', 'y']
 const NO_WORDS = ['no', 'nope', 'nah', 'no thanks', 'no thank you', 'not now', 'n']
 
+const roomLines: Record<string, string> = {
+  '/estate/youth': 'The nursery wing, sir. Seoul, a homestay in North Carolina, and a first glimpse of a much larger world.',
+  '/estate/highschool': 'The study. Singapore, a difficult first year, and the discovery that stories and code could share a desk.',
+  '/estate/university-army': 'The workshop. Penn State, projects built in earnest, and a stretch of service in the Korean Army.',
+  '/estate/after-service': 'The quiet room. A notebook, more than ten game design documents, and a conviction that AI should empower creators.',
+  '/estate/now': 'The present day, sir. Tetrisaga, Lunexio, NHN, and an internship search under way.',
+}
+
 const suggestions = [
   'Show me his projects',
   'What is his experience?',
@@ -65,6 +73,8 @@ export default function ButlerSummon() {
   const [sessionDepth, setSessionDepth] = useState(0)
   const [contactCard, setContactCard] = useState<string | null>(null)
   const [easterEgg, setEasterEgg] = useState(false)
+  const [bubble, setBubble] = useState<string | null>(null)
+  const lastRoom = useRef<string | null>(null)
   const [pendingOffer, setPendingOffer] = useState<{ to: string; filter?: string } | null>(null)
   const [contactOpen, setContactOpen] = useState(false)
   const [contactEmail, setContactEmail] = useState('')
@@ -88,13 +98,48 @@ export default function ButlerSummon() {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, thinking])
 
+  const announceRoom = (key: string) => {
+    const line = roomLines[key]
+    if (!line) {
+      lastRoom.current = null
+      return
+    }
+    if (lastRoom.current === key) return
+    lastRoom.current = key
+    if (open) {
+      setMessages(m => [...m, { role: 'assistant', content: line }])
+      setExpression('smile')
+    } else {
+      setBubble(line)
+    }
+  }
+
+  useEffect(() => {
+    announceRoom(location.pathname)
+  }, [location.pathname])
+
+  useEffect(() => {
+    const onRoom = (e: Event) => announceRoom('/estate/' + (e as CustomEvent<string>).detail)
+    window.addEventListener('butler:room', onRoom)
+    return () => window.removeEventListener('butler:room', onRoom)
+  }, [open])
+
+  useEffect(() => {
+    if (!bubble) return
+    const timer = setTimeout(() => setBubble(null), 7000)
+    return () => clearTimeout(timer)
+  }, [bubble])
+
   const openPanel = () => {
     setOpen(true)
     setExpression('smile')
     if (messages.length === 0) {
-      const intro = pageIntros[location.pathname] ?? 'Good day, sir.'
+      const intro = bubble ?? roomLines[location.pathname] ?? pageIntros[location.pathname] ?? 'Good day, sir.'
       setMessages([{ role: 'assistant', content: intro + ' Where shall we begin?' }])
+    } else if (bubble) {
+      setMessages(m => [...m, { role: 'assistant', content: bubble }])
     }
+    setBubble(null)
   }
 
   const acceptOffer = (userText: string) => {
@@ -191,8 +236,34 @@ export default function ButlerSummon() {
     }
   }
 
+  const bubbleEl = bubble ? (
+    <div
+      onClick={openPanel}
+      style={{
+        position: 'fixed',
+        bottom: 108,
+        right: 32,
+        zIndex: 200,
+        maxWidth: 260,
+        backgroundColor: '#0F0D0A',
+        border: '1px solid #C9A84C55',
+        borderRadius: 10,
+        padding: '10px 14px',
+        color: '#d4b87a',
+        fontSize: 13,
+        lineHeight: 1.6,
+        cursor: 'pointer',
+        boxShadow: '0 8px 30px rgba(0,0,0,0.35)',
+      }}
+    >
+      {bubble}
+    </div>
+  ) : null
+
   if (!open) {
     return (
+      <>
+      {bubbleEl}
       <button
         onClick={() => {
           if (easterEgg) {
@@ -231,6 +302,7 @@ export default function ButlerSummon() {
           size={56}
         />
       </button>
+      </>
     )
   }
 

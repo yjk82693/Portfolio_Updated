@@ -82,7 +82,12 @@ export default function Estate() {
                   transition: 'border-color 0.2s, background-color 0.2s',
                 }}>
                   <button
-                    onClick={() => setOpenId(isOpen ? null : phase.id)}
+                    onClick={() => {
+                      setOpenId(isOpen ? null : phase.id)
+                      if (!isOpen) {
+                        window.dispatchEvent(new CustomEvent('butler:room', { detail: phase.id }))
+                      }
+                    }}
                     aria-expanded={isOpen}
                     style={{
                       width: '100%',
