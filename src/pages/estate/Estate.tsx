@@ -1,15 +1,13 @@
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import { phases } from '../../data/phases'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
-function readingTime(slides: number): string {
-  const minutes = Math.ceil(slides * 0.75)
-  return `~${minutes} min read`
-}
-
 export default function Estate() {
-  const navigate = useNavigate()
   const isMobile = useIsMobile()
+  const [openId, setOpenId] = useState<string | null>(null)
+
+  const NODE = isMobile ? 30 : 40
+  const PAD = NODE + 16
 
   return (
     <div style={{
@@ -33,104 +31,125 @@ export default function Estate() {
           fontSize: isMobile ? 28 : 36,
           fontWeight: 700,
           margin: 0,
-          marginBottom: 32,
+          marginBottom: 12,
         }}>
           A tour of the house
         </h1>
+        <p style={{ color: '#64748B', fontSize: 14, margin: 0, marginBottom: 40 }}>
+          Five chapters, in order. Select one to read it.
+        </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          {phases.map((phase) => (
-            <div
-              key={phase.id}
-              onClick={() => navigate(`/estate/${phase.id}`)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                border: '1px solid #E2E8F0',
-                borderRadius: 6,
-                overflow: 'hidden',
-                cursor: 'pointer',
-                backgroundColor: '#F8F9FA',
-                transition: 'border-color 0.2s, background-color 0.2s',
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLDivElement
-                el.style.borderColor = '#4A90D9'
-                el.style.backgroundColor = '#EFF6FF'
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLDivElement
-                el.style.borderColor = '#E2E8F0'
-                el.style.backgroundColor = '#F8F9FA'
-              }}
-            >
-              {/* Roman numeral */}
-              <div style={{
-                width: isMobile ? 48 : 72,
-                padding: isMobile ? '20px 0' : '28px 0',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#EFF6FF',
-                flexShrink: 0,
-              }}>
-                <span style={{
-                  color: '#4A90D9',
-                  fontSize: isMobile ? 16 : 20,
-                  fontWeight: 300,
-                  fontStyle: 'normal',
+        <div style={{ position: 'relative', paddingLeft: PAD }}>
+          <div style={{
+            position: 'absolute',
+            left: NODE / 2 - 1,
+            top: 20,
+            bottom: 20,
+            width: 2,
+            backgroundColor: '#E2E8F0',
+          }} />
+
+          {phases.map(phase => {
+            const isOpen = openId === phase.id
+            return (
+              <div key={phase.id} style={{ position: 'relative', marginBottom: 16 }}>
+                <div style={{
+                  position: 'absolute',
+                  left: -PAD,
+                  top: 14,
+                  width: NODE,
+                  height: NODE,
+                  borderRadius: '50%',
+                  backgroundColor: isOpen ? '#4A90D9' : '#FFFFFF',
+                  border: '2px solid #4A90D9',
+                  color: isOpen ? '#FFFFFF' : '#4A90D9',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: isMobile ? 11 : 14,
+                  fontWeight: 600,
+                  transition: 'all 0.2s',
+                  zIndex: 1,
                 }}>
                   {phase.romanNumeral}
-                </span>
-              </div>
-
-              {/* Title + subtitle */}
-              <div style={{ flex: 1, padding: isMobile ? '14px 16px' : '20px 28px', minWidth: 0 }}>
-                <p style={{
-                  color: '#0F172A',
-                  fontSize: isMobile ? 14 : 17,
-                  fontWeight: 600,
-                  margin: 0,
-                  marginBottom: 2,
-                }}>
-                  {phase.title}
-                </p>
-                <p style={{ color: '#64748B', fontSize: isMobile ? 12 : 13, margin: 0 }}>
-                  {phase.blurb}
-                </p>
-              </div>
-
-              {/* Year + moments — hide on mobile if too tight */}
-              {!isMobile && (
-                <div style={{ padding: '0 24px', flexShrink: 0, textAlign: 'center' }}>
-                  <p style={{ color: '#94A3B8', fontSize: 12, margin: 0, letterSpacing: 1 }}>
-                    {phase.yearRange}
-                  </p>
-                  <p style={{ color: '#CBD5E1', fontSize: 11, margin: 0, marginTop: 2 }}>
-                    {phase.slides.length} moments · {readingTime(phase.slides.length)}
-                  </p>
                 </div>
-              )}
 
-              {/* Enter */}
-              <div style={{ padding: isMobile ? '0 12px' : '0 28px', flexShrink: 0 }}>
-                <span style={{ color: '#4A90D9', fontSize: isMobile ? 12 : 13, letterSpacing: 1 }}>
-                  →
-                </span>
+                <div style={{
+                  border: `1px solid ${isOpen ? '#4A90D9' : '#E2E8F0'}`,
+                  borderRadius: 8,
+                  backgroundColor: isOpen ? '#FFFFFF' : '#F8F9FA',
+                  overflow: 'hidden',
+                  transition: 'border-color 0.2s, background-color 0.2s',
+                }}>
+                  <button
+                    onClick={() => setOpenId(isOpen ? null : phase.id)}
+                    aria-expanded={isOpen}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: 12,
+                      padding: isMobile ? '14px 16px' : '18px 24px',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{
+                        color: '#0F172A',
+                        fontSize: isMobile ? 15 : 17,
+                        fontWeight: 600,
+                        margin: 0,
+                        marginBottom: 2,
+                      }}>
+                        {phase.title}
+                      </p>
+                      <p style={{ color: '#64748B', fontSize: isMobile ? 12 : 13, margin: 0 }}>
+                        {phase.blurb}
+                      </p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
+                      {!isMobile && (
+                        <span style={{ color: '#94A3B8', fontSize: 12, letterSpacing: 1 }}>
+                          {phase.yearRange}
+                        </span>
+                      )}
+                      <span style={{ color: '#4A90D9', fontSize: 18, lineHeight: 1 }}>
+                        {isOpen ? '\u2212' : '+'}
+                      </span>
+                    </div>
+                  </button>
+
+                  {isOpen && (
+                    <div style={{
+                      padding: isMobile ? '0 16px 18px' : '0 24px 24px',
+                      borderTop: '1px solid #E2E8F0',
+                    }}>
+                      {isMobile && (
+                        <p style={{ color: '#94A3B8', fontSize: 12, letterSpacing: 1, margin: '14px 0 0' }}>
+                          {phase.yearRange}
+                        </p>
+                      )}
+                      {phase.slides.map((slide, i) => (
+                        <p key={i} style={{
+                          color: '#374151',
+                          fontSize: 15,
+                          lineHeight: 1.8,
+                          margin: '16px 0 0',
+                        }}>
+                          {slide.text}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
-
-        <p style={{
-          color: '#CBD5E1',
-          fontSize: 12,
-          letterSpacing: 2,
-          textAlign: 'center',
-          marginTop: 48,
-        }}>
-          ENTER ANY ROOM TO BEGIN
-        </p>
 
       </div>
     </div>

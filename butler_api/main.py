@@ -178,19 +178,22 @@ def butler(req: ButlerRequest):
         what = fact["what"] if fact else proj["blurb"]
         if wants_nav:
             return nav("Very good, sir. " + what, "/gallery/" + proj["slug"])
-        return {"reply": what + " Shall I take you there?"}
+        return {"reply": what + " Shall I take you there?",
+                "offer": {"to": "/gallery/" + proj["slug"]}}
 
     for pid, words in PHASE_KEYS.items():
         if has(text, words):
             summary = FACTS["phases"][FACT_PHASE[pid]]
             if wants_nav:
                 return nav(summary, "/estate/" + pid)
-            return {"reply": summary + " I can show you that room, if you wish."}
+            return {"reply": summary + " I can show you that room, if you wish.",
+                    "offer": {"to": "/estate/" + pid}}
 
     if has(text, EXP_WORDS):
         if wants_nav:
             return nav(experience_reply(text, t), "/report")
-        return {"reply": experience_reply(text, t)}
+        return {"reply": experience_reply(text, t) + " Shall I open the full report?",
+                "offer": {"to": "/report"}}
 
     flt = find_filter(text)
     for path, words in PAGES:

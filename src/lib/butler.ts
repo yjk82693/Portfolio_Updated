@@ -14,6 +14,7 @@ export type ButlerResponse = {
   to?: string
   filter?: string
   email?: string
+  offer?: { to: string; filter?: string }
 }
 
 export async function askButler(

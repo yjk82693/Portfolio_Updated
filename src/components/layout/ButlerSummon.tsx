@@ -18,6 +18,9 @@ const pageIntros: Record<string, string> = {
   '/report': 'The summary, as requested.',
 }
 
+const YES_WORDS = ['yes', 'yeah', 'yep', 'yup', 'sure', 'ok', 'okay', 'please', 'yes please', 'go ahead', 'y']
+const NO_WORDS = ['no', 'nope', 'nah', 'no thanks', 'no thank you', 'not now', 'n']
+
 const suggestions = [
   'Show me his projects',
   'What is his experience?',
@@ -62,6 +65,7 @@ export default function ButlerSummon() {
   const [sessionDepth, setSessionDepth] = useState(0)
   const [contactCard, setContactCard] = useState<string | null>(null)
   const [easterEgg, setEasterEgg] = useState(false)
+  const [pendingOffer, setPendingOffer] = useState<{ to: string; filter?: string } | null>(null)
   const [contactOpen, setContactOpen] = useState(false)
   const [contactEmail, setContactEmail] = useState('')
   const [contactName, setContactName] = useState('')
@@ -93,13 +97,41 @@ export default function ButlerSummon() {
     }
   }
 
+  const acceptOffer = (userText: string) => {
+    if (!pendingOffer) return
+    const target = pendingOffer.to
+    setPendingOffer(null)
+    setInput('')
+    setMessages(m => [...m,
+      { role: 'user', content: userText },
+      { role: 'assistant', content: 'Very good, sir.' },
+    ])
+    setExpression('happy')
+    navigate(target)
+  }
+
+  const declineOffer = (userText: string) => {
+    setPendingOffer(null)
+    setInput('')
+    setMessages(m => [...m,
+      { role: 'user', content: userText },
+      { role: 'assistant', content: 'As you wish, sir. Is there anything else I may do?' },
+    ])
+  }
+
   const send = async (override?: string) => {
     const text = (override ?? input).trim()
     if (!text || thinking) return
+    if (pendingOffer) {
+      const ans = text.toLowerCase().replace(/[^a-z ]/g, '').trim()
+      if (YES_WORDS.includes(ans)) { acceptOffer(text); return }
+      if (NO_WORDS.includes(ans)) { declineOffer(text); return }
+    }
     const userMsg: ButlerMessage = { role: 'user', content: text }
     const newMessages = [...messages, userMsg]
     setMessages(newMessages)
     setInput('')
+    setPendingOffer(null)
     setThinking(true)
     setExpression('thinking')
     setSessionDepth(d => d + 1)
@@ -110,6 +142,7 @@ export default function ButlerSummon() {
         sessionDepth,
       })
       setMessages([...newMessages, { role: 'assistant', content: result.reply }])
+      setPendingOffer(result.offer ?? null)
       setExpression('happy')
       if (result.action === 'navigate' && result.to) navigate(result.to)
       if (result.action === 'contact' && result.email) {
@@ -279,6 +312,40 @@ export default function ButlerSummon() {
             </span>
           </div>
         ))}
+
+        {pendingOffer && !thinking && (
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button
+              onClick={() => acceptOffer('Yes')}
+              style={{
+                backgroundColor: '#C9A84C',
+                border: 'none',
+                borderRadius: 14,
+                padding: '5px 18px',
+                color: '#0A0908',
+                fontSize: 12,
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              Yes
+            </button>
+            <button
+              onClick={() => declineOffer('No')}
+              style={{
+                backgroundColor: 'transparent',
+                border: '1px solid #C9A84C55',
+                borderRadius: 14,
+                padding: '5px 18px',
+                color: '#C9A84C',
+                fontSize: 12,
+                cursor: 'pointer',
+              }}
+            >
+              No
+            </button>
+          </div>
+        )}
 
         {thinking && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

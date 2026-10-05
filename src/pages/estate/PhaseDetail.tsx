@@ -62,13 +62,15 @@ export default function PhaseDetail() {
           <span style={{ color: '#94A3B8', fontSize: 13 }}>{phase.yearRange}</span>
         </div>
 
-        {/* Image carousel for current slide */}
-        <div style={{ marginBottom: 0 }}>
-          <ImageCarousel
-            images={slide.image ? [slide.image] : []}
-            height={1000}
-          />
-        </div>
+        {/* Image carousel, only when the slide has art */}
+        {slide.image && (
+          <div style={{ marginBottom: 0 }}>
+            <ImageCarousel
+              images={[slide.image]}
+              height={1000}
+            />
+          </div>
+        )}
 
         {/* Slide counter */}
         <div style={{ padding: '12px 0 0' }}>
