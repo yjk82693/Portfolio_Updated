@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import { butlerFacts } from '../data/butlerFacts'
 import { useIsMobile } from '../hooks/useIsMobile'
 
+const portfolioUrl = 'https://portfoliov2-alpha-nine.vercel.app'
+
 const skillGroups = [
   { label: 'Languages', skills: ['TypeScript', 'JavaScript', 'Python', 'Java', 'C', 'C++', 'C#'] },
   { label: 'Frameworks', skills: ['React', 'Next.js', 'Vite', 'Node.js', 'Express', 'Spring', 'Prisma', 'Ant Design'] },
@@ -57,6 +59,9 @@ export default function Report() {
               </a>
               <a href={butlerFacts.linkedin} target="_blank" rel="noreferrer" style={{ color: '#4A90D9', fontSize: 12, letterSpacing: 1 }}>
                 linkedin ↗
+              </a>
+              <a href={portfolioUrl} target="_blank" rel="noreferrer" style={{ color: '#4A90D9', fontSize: 12, letterSpacing: 1 }}>
+                portfolio ↗
               </a>
             </div>
           </div>
