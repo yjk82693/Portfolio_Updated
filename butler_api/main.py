@@ -54,6 +54,16 @@ NAV_WORDS = ["show", "take me", "go to", "open", "see", "view", "bring", "visit"
              "navigate", "head to", "look at"]
 CONTACT_WORDS = ["contact", "email", "reach", "hire", "hiring", "get in touch", "message him"]
 GREET_WORDS = ["hello", "hi", "hey", "good morning", "good evening"]
+HELP_WORDS = ["what can you do", "what do you do", "help", "option", "options", "menu",
+              "where do i start", "where should i start", "what can i ask",
+              "what should i ask", "how do you work", "capabilities"]
+HINT = " Might I suggest asking about his projects, his experience, or his skills?"
+MENU = ["Show me his projects", "What is his experience?",
+        "What are his skills?", "How do I contact him?",
+        "Take me through his life story"]
+MENU_REPLY = ("Allow me, sir. Reply with a number, or ask freely:\n"
+              + "\n".join(str(i + 1) + ". " + q for i, q in enumerate(MENU))
+              + "\nI can also take you to the estate, the gallery, or the report.")
 BIO_WORDS = ["who is", "about him", "tell me about him", "bio", "introduce", "yourself"]
 PITCH_WORDS = ["short version", "summary", "pitch", "elevator", "tldr"]
 EXP_WORDS = ["experience", "intern", "internship", "worked", "career", "jobs", "job history",
@@ -156,6 +166,10 @@ def experience_reply(text, t):
 def butler(req: ButlerRequest):
     t = tone(req.context.sessionDepth)
     text = req.messages[-1].content if req.messages else ""
+    if text.strip() in {"1", "2", "3", "4", "5"}:
+        text = MENU[int(text.strip()) - 1]
+    if has(text, HELP_WORDS):
+        return {"reply": MENU_REPLY}
     wants_nav = has(text, NAV_WORDS)
 
     if has(text, CONTACT_WORDS):
@@ -215,6 +229,6 @@ def butler(req: ButlerRequest):
                               "Hello again, sir. Might I suggest simply contacting him?")}
 
     return {"reply": pick(t,
-                          "I am afraid that is beyond my remit, sir. I attend to his work only.",
-                          "That falls outside the estate, sir. Might I show you a project instead?",
+                          "I am afraid that is beyond my remit, sir. I attend to his work only." + HINT,
+                          "That falls outside the estate, sir. Might I show you a project instead?" + HINT,
                           "No. I will not be drawn on that. Contact him, sir.")}
