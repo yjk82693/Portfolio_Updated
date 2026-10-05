@@ -1,75 +1,58 @@
-# React + TypeScript + Vite
+# The Estate
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A butler-guided personal portfolio by Yoojun Kim. Instead of a static page, visitors wander an estate and can ask Sharvis, a JARVIS-style shark butler, to show them around.
 
-Currently, two official plugins are available:
+## Pages
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Welcome** (`/`): the front door
+- **The Estate** (`/estate`): my life story told as five phases, with hand-drawn comics
+- **The Gallery** (`/gallery`): selected projects with category filters and screenshot walkthroughs
+- **The Report** (`/report`): resume and experience
 
-## React Compiler
+## Meet Sharvis
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Sharvis floats on every page except the welcome screen. He can take visitors to any real page or project, answer questions about my experience and skills, and open a note form to get in touch. His answers come only from data stored in this repo, so he never invents details. The backend is a small rule-based FastAPI app in `butler_api/`, so it has no API usage costs.
 
-## Expanding the ESLint configuration
+## Tech
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Frontend: React, TypeScript, Vite, react-router-dom
+- Butler backend: Python, FastAPI, Uvicorn
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Run locally
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Frontend:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+~~~bash
+npm install
+npm run dev
+~~~
 
-```
+Butler backend, in a second terminal:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+~~~bash
+cd butler_api
+python3 -m venv .venv
+source .venv/bin/activate
+pip install fastapi uvicorn
+uvicorn main:app --reload --port 8000
+~~~
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Vite proxies `/api` to port 8000 in dev, so both servers need to be running for Sharvis to answer.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+When project or phase data changes, regenerate the butler's data file from the repo root:
 
-```
+~~~bash
+npx --yes tsx butler_api/export_data.ts > butler_api/data.json
+~~~
+
+## Structure
+
+~~~
+src/
+  components/   layout (Navbar, Footer, ButlerSummon) and ui pieces
+  data/         projects, phases, butler facts
+  pages/        Welcome, Report, estate/, gallery/
+  lib/          frontend helper for the butler API
+butler_api/     Python backend for Sharvis
+public/         butler expressions, screenshots, phase illustrations
+~~~
