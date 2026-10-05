@@ -2,7 +2,7 @@ export const butlerFacts = {
   name: 'Yoojun Kim',
   email: 'yjkxlr8tion@gmail.com',
   github: 'https://github.com/yjk82693',
-  linkedin: 'https://www.linkedin.com/in/yoojun-kim-5899051a5',
+  linkedin: 'https://www.linkedin.com/in/yjk5255',
 
   bio: 'Yoojun Kim is a Computer Science and Mathematics student at Penn State (GPA 3.57), expecting to graduate in May 2027. Inspired by the creativity of Disney and Nintendo, he pursues both full-stack web development and game development, with internship experience at NHN, Lunexio, CoconeM, and Kim & Chang, and service in the Republic of Korea Army.',
 
