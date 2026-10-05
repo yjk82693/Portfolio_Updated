@@ -126,7 +126,7 @@ export default function Welcome() {
                 margin: 0,
                 marginBottom: 32,
               }}>
-                I'm a CS & Math student at Penn State (GPA 3.55), currently seeking a software
+                I'm a CS & Math student at Penn State (GPA 3.57), currently seeking a software
                 engineering internship. I've shipped full-stack systems, Unity games, and AI tools
                 across internships at NHN, Lunexio, CoconeM, and Kim & Chang.
               </p>

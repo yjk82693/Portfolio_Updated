@@ -104,7 +104,7 @@ export default function Report() {
                 Penn State University
               </p>
               <p style={{ color: '#64748B', fontSize: 13, margin: 0 }}>
-                B.S. Computer Science & Mathematics · GPA 3.55/4.00 · Dean's List
+                B.S. Computer Science & Mathematics · GPA 3.57/4.00 · Dean's List
               </p>
               <p style={{ color: '#94A3B8', fontSize: 11, margin: 0, marginTop: 2 }}>
                 Data Structures · System Programming · Algorithms · Linear Algebra · Number Theory

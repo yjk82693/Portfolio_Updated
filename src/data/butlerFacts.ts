@@ -4,7 +4,7 @@ export const butlerFacts = {
   github: 'https://github.com/yjk82693',
   linkedin: 'https://www.linkedin.com/in/yoojun-kim-5899051a5',
 
-  bio: 'Yoojun Kim is a Computer Science and Mathematics student at Penn State (GPA 3.55), expecting to graduate in May 2027. Inspired by the creativity of Disney and Nintendo, he pursues both full-stack web development and game development, with internship experience at NHN, Lunexio, CoconeM, and Kim & Chang, and service in the Republic of Korea Army.',
+  bio: 'Yoojun Kim is a Computer Science and Mathematics student at Penn State (GPA 3.57), expecting to graduate in May 2027. Inspired by the creativity of Disney and Nintendo, he pursues both full-stack web development and game development, with internship experience at NHN, Lunexio, CoconeM, and Kim & Chang, and service in the Republic of Korea Army.',
 
   skills: [
     'TypeScript', 'JavaScript', 'Python', 'Java', 'C', 'C++', 'C#',
@@ -107,7 +107,7 @@ export const butlerFacts = {
   phases: {
     youth: 'Grew up in Seoul, did a homestay in North Carolina and moved to Virginia — first exposure to a wider world. Later attended international school in Singapore.',
     highschool: 'Attended UWCSEA in Singapore, struggled and found resilience — discovered computer science as the bridge between storytelling and technology after watching Frozen 2.',
-    university: 'Penn State CS + Math student (GPA 3.55), built real full-stack and game projects, worked at CoconeM, served in the Korean Army.',
+    university: 'Penn State CS + Math student (GPA 3.57), built real full-stack and game projects, worked at CoconeM, served in the Korean Army.',
     afterservice: 'Military service sharpened discipline and sparked a conviction: AI could empower creatives, not just engineers. Carried a notebook, outlined 10+ GDDs during service.',
     now: 'Using AI in practice — built Tetrisaga with AI-assisted skeleton, led Guardians of the Milky Way, interned at Lunexio and NHN. Actively seeking a software engineering internship.',
   },
