@@ -99,6 +99,7 @@ FILTERS = {
 EXTRA_KEYS = {
     "basic-game-platform": ["gamebase", "game platform"],
     "last-bit-standing": ["basepoker", "last bit"],
+    "last-bit-standing-multiplayer": ["multiplayer", "spacetime", "spacetimedb", "online mode"],
     "portfolio-v2": ["sharvis", "this site", "this portfolio"],
     "portfolio-v1": ["first portfolio"],
 }

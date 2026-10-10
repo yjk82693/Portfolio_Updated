@@ -29,6 +29,15 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: 'last-bit-standing-multiplayer',
+    title: 'Last Bit Standing: Multiplayer',
+    blurb: 'A humans-only multiplayer track for Last Bit Standing, built on SpacetimeDB.',
+    description: 'A separate track that takes the HopHacks card game online as a humans-only multiplayer game. Players pick a 2, 3, or 4 player table or create a custom room, and find each other through a public lobby list or by sharing a room code. Game state runs on SpacetimeDB, with the same binary, hex, and ASCII rounds as the original. Currently in progress.',
+    category: ['fullstack', 'game'],
+    status: 'in-progress',
+    evolvedFrom: 'last-bit-standing',
+  },
+  {
     slug: 'last-bit-standing',
     title: 'Last Bit Standing',
     blurb: 'A last-player-standing card game teaching binary, hex, and ASCII.',
@@ -38,6 +47,7 @@ export const projects: Project[] = [
     github: 'https://github.com/Pespinosa2004/ai-language-showdown',
     demo: 'https://ai-language-showdown.vercel.app/',
     status: 'in-progress',
+    evolvedInto: 'last-bit-standing-multiplayer',
     screenshots: [
       { image: '/screenshots/last-bit-standing/landing.png', caption: 'Landing — human vs. five language models, with a sample of the binary, hex, and ASCII cards players will hold.' },
       { image: '/screenshots/last-bit-standing/live-round.png', caption: 'Live round — table view with all six players\' hearts/lives, a timed prompt, and score multiplier ticking down.' },
