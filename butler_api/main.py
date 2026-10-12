@@ -103,6 +103,7 @@ EXTRA_KEYS = {
     "portfolio-v2": ["sharvis", "this site", "this portfolio"],
     "portfolio-v1": ["first portfolio"],
     "chess-rpg": ["chess", "training grounds", "c0mpiled", "wargame"],
+    "training-grounds": ["agent backend", "mongodb", "agent team", "coach", "coaches"],
 }
 FACT_ALIAS = {"basic-game-platform": "gamebase"}
 STOP = {"about", "the", "what", "any", "how", "a", "an", "his", "him", "he", "more", "anything"}
