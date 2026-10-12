@@ -34,8 +34,14 @@ export const projects: Project[] = [
     blurb: 'A turn-based tactics game where an AI agent team learns to win across generations.',
     description: 'Built at the c0mpiled-15 hackathon at Penn State on the self-improving agent team track. A turn-based tactics game on an 8x8 grid with terrain, a sword, axe, and lance weapon triangle, and Fire, Water, and Electricity attributes. A team of AI agents plays it: a commander picks each turn\'s moves from the engine\'s legal options, a quartermaster spends experience on promotions and builds the party under a cost cap, and a coach reads each battle log and rewrites a short strategy playbook. The goal is to show win rate improving over generations through real strategy learning, not just stat growth. Runs entirely in the browser with Vite, TypeScript, and HTML canvas. Built with a teammate who handled the agent side.',
     category: ['frontend', 'game', 'hackathon'],
+    image: '/screenshots/chess-rpg/chart_tg1_combined.png',
     github: 'https://github.com/yjk82693/chess-rpg',
     status: 'in-progress',
+    screenshots: [
+      { image: '/screenshots/chess-rpg/chart_tg1_combined.png', caption: 'Experiment chart from the tg1 run, combined view.' },
+      { image: '/screenshots/chess-rpg/chart_tg1_full.png', caption: 'Experiment chart from the tg1 run, full view.' },
+      { image: '/screenshots/chess-rpg/chart_tg1_frozen_stats.png', caption: 'Experiment chart from the tg1 run with unit stats frozen.' },
+    ],
   },
   {
     slug: 'last-bit-standing-multiplayer',
