@@ -10,9 +10,10 @@ type ImageCarouselProps = {
   screenshots?: ScreenshotItem[]
   height?: number
   category?: string
+  fit?: 'cover' | 'contain'
 }
 
-export default function ImageCarousel({ images = [], screenshots = [], height = 320, category }: ImageCarouselProps) {
+export default function ImageCarousel({ images = [], screenshots = [], height = 320, category, fit = 'cover' }: ImageCarouselProps) {
   const [idx, setIdx] = useState(0)
 
   const items: ScreenshotItem[] = screenshots.length > 0
@@ -27,7 +28,7 @@ export default function ImageCarousel({ images = [], screenshots = [], height = 
       <div style={{
         width: '100%',
         height,
-        backgroundColor: '#F0F4F8',
+        backgroundColor: fit === 'contain' ? '#0B1021' : '#F0F4F8',
         border: '1px solid #E2E8F0',
         borderRadius: current?.caption ? '8px 8px 0 0' : 8,
         overflow: 'hidden',
@@ -41,7 +42,7 @@ export default function ImageCarousel({ images = [], screenshots = [], height = 
             <img
               src={current.image}
               alt={current.caption ?? `Screenshot ${idx + 1}`}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{ width: '100%', height: '100%', objectFit: fit }}
             />
 
             {items.length > 1 && (

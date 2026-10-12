@@ -17,6 +17,7 @@ export type Project = {
   description: string
   category: Category | Category[]
   image?: string
+  imageFit?: 'cover' | 'contain'
   github?: string
   demo?: string
   designDoc?: string
@@ -31,16 +32,19 @@ export const projects: Project[] = [
   {
     slug: 'chess-rpg',
     title: 'Chess RPG: Training Grounds',
-    blurb: 'A turn-based tactics game where an AI agent team learns to win across generations.',
-    description: 'Built at the c0mpiled-15 hackathon at Penn State on the self-improving agent team track. A turn-based tactics game on an 8x8 grid with terrain, a sword, axe, and lance weapon triangle, and Fire, Water, and Electricity attributes. A team of AI agents plays it: a commander picks each turn\'s moves from the engine\'s legal options, a quartermaster spends experience on promotions and builds the party under a cost cap, and a coach reads each battle log and rewrites a short strategy playbook. The goal is to show win rate improving over generations through real strategy learning, not just stat growth. Runs entirely in the browser with Vite, TypeScript, and HTML canvas. Built with a teammate who handled the agent side.',
+    blurb: 'A chess-style RPG with deck building, multiplayer, and an AI trainer that ranks your decks.',
+    description: 'Built at the c0mpiled-15 hackathon at Penn State on the self-improving agent team track. A chess-style tactics game on an 8x8 board with a river and bridges, where pawns, queens, and RPG heroes fight with stats and counters and each king casts spell cards. Players build a battle deck under a cost cap, buy and level cards with gems, then take on a live opponent (or an AI ghost of their deck) or climb a training ladder of AI opponents with different play styles. An AI trainer plays every deck against a chosen opponent and ranks them, and an Ask the Coach button is available during battles. Runs in the browser, built with Vite and TypeScript. Built with a teammate who handled the agent side.',
     category: ['frontend', 'game', 'hackathon'],
-    image: '/screenshots/chess-rpg/chart_tg1_combined.png',
+    image: '/screenshots/chess-rpg/battle-board.jpg',
+    imageFit: 'contain',
     github: 'https://github.com/yjk82693/chess-rpg',
     status: 'in-progress',
     screenshots: [
-      { image: '/screenshots/chess-rpg/chart_tg1_combined.png', caption: 'Experiment chart from the tg1 run, combined view.' },
-      { image: '/screenshots/chess-rpg/chart_tg1_full.png', caption: 'Experiment chart from the tg1 run, full view.' },
-      { image: '/screenshots/chess-rpg/chart_tg1_frozen_stats.png', caption: 'Experiment chart from the tg1 run with unit stats frozen.' },
+      { image: '/screenshots/chess-rpg/battle-board.jpg', caption: 'Battle board: a chess-style 8x8 grid with RPG heroes, a river crossed at the bridges, the king skills and spells on the left, the rules on the right, and an Ask the Coach button.' },
+      { image: '/screenshots/chess-rpg/battle-menu.jpg', caption: 'Battle menu: play a live opponent, with an AI ghost standing in for the real player if nobody is online, or train solo against the AI trainer.' },
+      { image: '/screenshots/chess-rpg/cards.jpg', caption: 'Cards: build a battle deck under a cost cap, equip king spells, and have the AI trainer play every deck you own against a chosen opponent and rank them.' },
+      { image: '/screenshots/chess-rpg/training-ladder.jpg', caption: 'Training ladder: opponents unlock in order, each with an AI play style (turtle, rusher, or tactician) and a gem reward that triples on the first clear.' },
+      { image: '/screenshots/chess-rpg/shop.jpg', caption: 'Shop: gem packs, chest storage for chests won in battle, and cards priced by rarity from common to legend.' },
     ],
   },
   {

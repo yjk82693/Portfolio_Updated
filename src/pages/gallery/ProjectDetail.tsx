@@ -185,7 +185,8 @@ export default function ProjectDetail() {
             ) : (
               <ImageCarousel
                 screenshots={screenshots}
-                height={320}
+                height={project.imageFit === 'contain' ? 520 : 320}
+                fit={project.imageFit}
                 category={primaryCat}
               />
             )}
