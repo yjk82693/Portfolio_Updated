@@ -203,6 +203,11 @@ export default function Report() {
                   <p style={{ color: '#0F172A', fontSize: 13, fontWeight: 600, margin: 0 }}>
                     {p.title}
                   </p>
+                  {p.award && (
+                    <p style={{ color: '#92400E', fontSize: 11, margin: '2px 0 0' }}>
+                      Winner: {p.award}
+                    </p>
+                  )}
                   <p style={{ color: '#64748B', fontSize: 12, margin: 0 }}>
                     {p.tech.join(', ')}
                   </p>

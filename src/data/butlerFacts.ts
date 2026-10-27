@@ -15,6 +15,14 @@ export const butlerFacts = {
 
   projects: [
     {
+      slug: 'factorypulse',
+      title: 'FactoryPulse',
+      award: 'Best Use of Auth0, HackPSU Fall 2026',
+      what: 'Award-winning real-time assembly-cell monitoring prototype built at HackPSU Fall 2026 by a three-person team. ESP32 devices collect Wi-Fi CSI sensing data, a Python pipeline and FastAPI backend turn it into live events and alerts, and a React dashboard shows them over WebSockets, with Google Gemini alert explanations and ElevenLabs voice briefings. Auth0 protects the endpoints and Tiger Data stores event history. The sensing pipeline was demonstrated on physical hardware, but the assembly workflow was simulated.',
+      hard: 'Integrating the hardware sensing, backend, dashboard, and AI and voice features into one working system during a hackathon.',
+      tech: ['Python', 'FastAPI', 'WebSockets', 'React', 'TypeScript', 'ESP32', 'Wi-Fi CSI', 'Auth0', 'PostgreSQL/TimescaleDB', 'Google Gemini', 'ElevenLabs'],
+    },
+    {
       slug: 'tetrisaga',
       title: 'Tetrisaga',
       what: 'A solo-developed Unity roguelike where Tetris mechanics trigger PvE combat with elemental effects. AI was used to accelerate the game skeleton — level structure, enemy logic, progression curves.',
