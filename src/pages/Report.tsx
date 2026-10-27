@@ -6,8 +6,8 @@ const portfolioUrl = 'https://portfoliov2-alpha-nine.vercel.app'
 
 const skillGroups = [
   { label: 'Languages', skills: ['TypeScript', 'JavaScript', 'Python', 'Java', 'C', 'C++', 'C#'] },
-  { label: 'Frameworks', skills: ['React', 'Next.js', 'Vite', 'Node.js', 'Express', 'Spring', 'Prisma', 'Ant Design'] },
-  { label: 'Data & Infra', skills: ['MySQL', 'Redis', 'SQLite', 'REST API', 'AWS'] },
+  { label: 'Frameworks', skills: ['React', 'Next.js', 'Vite', 'Node.js', 'Express', 'Spring', 'Prisma', 'Ant Design', 'FastAPI'] },
+  { label: 'Data & Infra', skills: ['MySQL', 'Redis', 'SQLite', 'REST API', 'WebSockets', 'PostgreSQL', 'MongoDB', 'Auth0', 'AWS'] },
   { label: 'Tools', skills: ['Unity', 'Pygame', 'Git', 'Linux'] },
 ]
 

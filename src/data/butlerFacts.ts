@@ -15,6 +15,20 @@ export const butlerFacts = {
 
   projects: [
     {
+      slug: 'chess-rpg',
+      title: 'Chess RPG: Training Grounds',
+      what: 'A chess-style RPG built at the c0mpiled-15 hackathon at Penn State: an 8x8 board with terrain and a river, RPG heroes with stats and counters, king spell cards, deck building with gem-based card progression, multiplayer, and a training ladder of AI opponents. I created the game and served as its game director and technical lead. A teammate implemented the multiplayer server code under my direction and wrote the Python AI agents.',
+      hard: 'Combining chess movement rules with RPG combat, king spells, and card progression in one rules engine.',
+      tech: ['TypeScript', 'Vite', 'Node.js', 'MongoDB', 'Python'],
+    },
+    {
+      slug: 'last-bit-standing',
+      title: 'Last Bit Standing',
+      what: 'A last-player-standing card game built by a team at HopHacks 2026 that teaches binary, hex, and ASCII. Players answer timed prompts with encoding cards while managing lives and a score multiplier, and the original plays a human against five language models. I am continuing it as a separate multiplayer track on SpacetimeDB.',
+      hard: 'Keeping the card, prompt, and scoring state consistent in a real-time game.',
+      tech: ['Next.js', 'React', 'Tailwind CSS', 'SpacetimeDB'],
+    },
+    {
       slug: 'factorypulse',
       title: 'FactoryPulse',
       award: 'Best Use of Auth0, HackPSU Fall 2026',
