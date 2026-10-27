@@ -95,10 +95,60 @@ export default function ProjectDetail() {
           </div>
         </div>
 
+        {(project.subtitle || project.award) && (
+          <div style={{ marginBottom: 20 }}>
+            {project.subtitle && (
+              <p style={{ color: '#0F172A', fontSize: 17, margin: '0 0 10px' }}>
+                {project.subtitle}
+              </p>
+            )}
+            {project.award && (
+              <span style={{
+                display: 'inline-block',
+                backgroundColor: '#FEF3C7',
+                color: '#92400E',
+                border: '1px solid #F59E0B',
+                borderRadius: 4,
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: 1,
+                padding: '4px 12px',
+              }}>
+                {project.award}
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Description */}
         <p style={{ color: '#64748B', fontSize: 15, lineHeight: 1.8, marginBottom: 32 }}>
           {project.description}
         </p>
+
+        {project.highlights && project.highlights.length > 0 && (
+          <div style={{ marginBottom: 32 }}>
+            <p style={{ color: '#94A3B8', fontSize: 11, letterSpacing: 2, margin: '0 0 12px' }}>
+              ENGINEERING HIGHLIGHTS
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {project.highlights.map((h, i) => (
+                <div key={i} style={{
+                  border: '1px solid #E2E8F0',
+                  borderRadius: 6,
+                  padding: '12px 16px',
+                  backgroundColor: '#F8F9FA',
+                }}>
+                  <p style={{ color: '#0F172A', fontSize: 14, fontWeight: 600, margin: '0 0 2px' }}>
+                    {h.title}
+                  </p>
+                  <p style={{ color: '#64748B', fontSize: 13, lineHeight: 1.7, margin: 0 }}>
+                    {h.text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Links */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 40 }}>
@@ -117,6 +167,11 @@ export default function ProjectDetail() {
               }}
             >
               code ↗
+            </a>
+          )}
+          {project.devpost && (
+            <a href={project.devpost} target="_blank" rel="noreferrer" style={{ color: '#4A90D9', border: '1px solid #4A90D9', borderRadius: 6, padding: '8px 20px', fontSize: 13, letterSpacing: 1 }}>
+              devpost ↗
             </a>
           )}
           {project.demo && (

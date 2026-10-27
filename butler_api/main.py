@@ -102,6 +102,7 @@ EXTRA_KEYS = {
     "last-bit-standing-multiplayer": ["multiplayer", "spacetime", "spacetimedb", "online mode"],
     "portfolio-v2": ["sharvis", "this site", "this portfolio"],
     "portfolio-v1": ["first portfolio"],
+    "factorypulse": ["factory pulse", "auth0", "esp32", "wifi", "wi fi", "csi", "assembly cell", "hackpsu"],
     "chess-rpg": ["chess", "training grounds", "c0mpiled", "wargame"],
     "training-grounds": ["agent backend", "mongodb", "agent team", "coach", "coaches"],
 }

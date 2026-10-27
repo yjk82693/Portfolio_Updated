@@ -17,6 +17,10 @@ export type Project = {
   description: string
   category: Category | Category[]
   image?: string
+  subtitle?: string
+  award?: string
+  devpost?: string
+  highlights?: { title: string; text: string }[]
   imageFit?: 'cover' | 'contain'
   github?: string
   demo?: string
@@ -29,6 +33,36 @@ export type Project = {
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'factorypulse',
+    title: 'FactoryPulse',
+    subtitle: 'Smart Assembly Cell Intelligence',
+    award: 'Winner: Best Use of Auth0 (MLH), HackPSU Fall 2026',
+    blurb: 'Award-winning ESP32 Wi-Fi sensing streamed live to an assembly-cell dashboard.',
+    description: 'Award-winning real-time assembly-cell monitoring prototype that transforms Wi-Fi sensing data from ESP32 devices into live operational events, actionable alerts, and AI-assisted explanations through a FastAPI backend and React dashboard. Built at HackPSU Fall 2026 by Kim\'s Club, a three-person team, it explores how low-cost Wi-Fi sensing can give activity awareness around an assembly workstation without conventional video surveillance. Two ESP32 devices collect Wi-Fi Channel State Information (CSI), a Python pipeline processes it and delivers it to a FastAPI backend, and events and alerts stream to a React dashboard over WebSockets. The physical sensing is paired with a simulated assembly-machine workflow: deterministic monitoring rules flag activity during sensitive workflow stages, Google Gemini writes human-readable alert explanations, and ElevenLabs provides voice briefings. Auth0 protects the REST and WebSocket endpoints, and Tiger Data (PostgreSQL/TimescaleDB) keeps event and alert history. Scope: the sensing-to-dashboard pipeline was demonstrated on physical hardware, but the assembly workflow was simulated and nothing was deployed on real industrial equipment. Auth0 login and protected access were verified locally. Persistence was verified locally for software-generated events and acknowledged alerts, and physical CSI events were not tested end to end into the database. The optimization features are prototype, example-based functionality.',
+    category: ['fullstack', 'hackathon'],
+    image: '/screenshots/factorypulse/01-factorypulse-main-dashboard.png',
+    imageFit: 'contain',
+    github: 'https://github.com/yjk82693/FactoryPulse',
+    devpost: 'https://devpost.com/software/factorypulse-smart-assembly-cell-intelligence',
+    status: 'complete',
+    highlights: [
+      { title: 'Hardware-to-dashboard pipeline', text: 'Demonstrated on physical hardware: ESP32 Wi-Fi CSI sensing flowing through Python and FastAPI to a live React dashboard over WebSockets.' },
+      { title: 'Real-time event processing', text: 'Sensing events and a simulated assembly workflow feed deterministic monitoring rules that generate alerts.' },
+      { title: 'Authentication and access control', text: 'Auth0 Google login with protected REST and WebSocket endpoints, verified in a local environment.' },
+      { title: 'Persistent event history', text: 'Tiger Data (PostgreSQL/TimescaleDB) stores events and alerts. Recovery across backend restarts was verified locally for software-generated events.' },
+      { title: 'AI-assisted monitoring', text: 'Google Gemini explains alerts in plain language, and ElevenLabs delivers voice briefings.' },
+      { title: 'Team leadership and integration', text: 'Helped lead the three-person team and contributed to the dashboard, the AI and voice experience, optimization functionality, and overall system integration.' },
+    ],
+    screenshots: [
+      { image: '/screenshots/factorypulse/01-factorypulse-main-dashboard.png', caption: 'Main dashboard: workflow stage indicators, a live sensor activity chart, operational alerts with Acknowledge and Explain actions, and a recent events feed.' },
+      { image: '/screenshots/factorypulse/02-factorypulse-live-workflow-timeline.png', caption: 'Live workflow timeline: the simulated assembly workflow moving through its stages alongside the sensing data.' },
+      { image: '/screenshots/factorypulse/05-activity-review-alert.png', caption: 'Activity-review alert: a warning raised when activity is detected near the cell during a sensitive workflow stage.' },
+      { image: '/screenshots/factorypulse/03-gemini-alert-explanation.png', caption: 'Gemini alert explanation: Google Gemini turns an alert into a plain-language explanation for the operator.' },
+      { image: '/screenshots/factorypulse/04-tiger-data-persistence.png', caption: 'Tiger Data persistence: events and acknowledged alerts stored in Tiger Data (PostgreSQL/TimescaleDB) and kept across backend restarts, verified locally with software-generated events.' },
+      { image: '/screenshots/factorypulse/06-elevenlabs-voice-briefing.png', caption: 'ElevenLabs voice briefing: an alert briefing delivered as speech through ElevenLabs.' },
+    ],
+  },
   {
     slug: 'chess-rpg',
     title: 'Chess RPG: Training Grounds',
@@ -70,10 +104,21 @@ export const projects: Project[] = [
     slug: 'last-bit-standing-multiplayer',
     title: 'Last Bit Standing: Multiplayer',
     blurb: 'A humans-only multiplayer track for Last Bit Standing, built on SpacetimeDB.',
-    description: 'A separate track that takes the HopHacks card game online as a humans-only multiplayer game. Players pick a 2, 3, or 4 player table or create a custom room, and find each other through a public lobby list or by sharing a room code. Game state runs on SpacetimeDB, with the same binary, hex, and ASCII rounds as the original. Currently in progress.',
+    description: 'A separate track that takes the HopHacks card game online as a humans-only multiplayer game. Players pick a 2, 3, or 4 player table for a quick match, create a custom room with 2 to 6 seats that can be private and joined only by code, or join one of the open tables listed in the lobby. Game state runs on SpacetimeDB, with the same binary, hex, and ASCII rounds as the original. Currently in progress.',
     category: ['fullstack', 'game'],
+    image: '/screenshots/last-bit-standing/multiplayer-lobby.jpg',
+    imageFit: 'contain',
     status: 'in-progress',
     evolvedFrom: 'last-bit-standing',
+    screenshots: [
+      { image: '/screenshots/last-bit-standing/multiplayer-lobby.jpg', caption: 'Multiplayer lobby: quick match for 2, 3, or 4 players, join by room code, create a custom room with 2 to 6 seats (optionally private, code only), and a list of open tables to join.' },
+      { image: '/screenshots/last-bit-standing/live-round.png', caption: 'Base game, live round: the table view with hearts for all six players, a timed prompt, and a score multiplier that ticks down.' },
+      { image: '/screenshots/last-bit-standing/landing.png', caption: 'Base game, landing page: a human against five language models, with sample binary, hex, and ASCII cards.' },
+      { image: '/screenshots/last-bit-standing/leaderboard.png', caption: 'Base game, leaderboard: wins rank above falls, then points, remaining lives, and rounds survived.' },
+      { image: '/screenshots/last-bit-standing/encoding-bench.png', caption: 'Base game, encoding bench: a reference for reading binary, hex, and ASCII before sitting at the table.' },
+      { image: '/screenshots/last-bit-standing/letter-lamps.png', caption: 'Base game, letter lamps: the 5-bit letter encoding some prompts use, which is not ASCII.' },
+      { image: '/screenshots/last-bit-standing/ascii-reference.png', caption: 'Base game, ASCII reference: glyph, decimal, and hex values for letters, digits, and space.' },
+    ],
   },
   {
     slug: 'last-bit-standing',

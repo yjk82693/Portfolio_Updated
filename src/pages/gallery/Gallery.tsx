@@ -170,6 +170,24 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
         position: 'relative',
         overflow: 'hidden',
       }}>
+        {project.award && (
+          <div style={{
+            position: 'absolute',
+            top: 10,
+            left: 10,
+            zIndex: 1,
+            backgroundColor: '#FEF3C7',
+            color: '#92400E',
+            border: '1px solid #F59E0B',
+            borderRadius: 3,
+            fontSize: 10,
+            fontWeight: 700,
+            letterSpacing: 1.5,
+            padding: '2px 8px',
+          }}>
+            WINNER
+          </div>
+        )}
         {project.image ? (
           <img
             src={project.image}
