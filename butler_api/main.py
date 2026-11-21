@@ -105,6 +105,7 @@ EXTRA_KEYS = {
     "factorypulse": ["factory pulse", "auth0", "esp32", "wifi", "wi fi", "csi", "assembly cell", "hackpsu"],
     "chess-rpg": ["chess", "training grounds", "c0mpiled", "wargame"],
     "training-grounds": ["agent backend", "mongodb", "agent team", "coach", "coaches"],
+    "balance-forge": ["balance forge", "hackprinceton", "playtesting", "game balance"],
 }
 FACT_ALIAS = {"basic-game-platform": "gamebase"}
 STOP = {"about", "the", "what", "any", "how", "a", "an", "his", "him", "he", "more", "anything"}

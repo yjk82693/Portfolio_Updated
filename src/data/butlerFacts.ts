@@ -15,6 +15,13 @@ export const butlerFacts = {
 
   projects: [
     {
+      slug: 'balance-forge',
+      title: 'Balance-Forge',
+      what: 'An AI playtesting platform for game developers, built solo at HackPrinceton Fall 2026. Seeded bots play hundreds of deterministic matches, each matchup is judged against the designer\'s intended win rate with Wilson confidence intervals, and Google Gemini proposes a small numeric patch that is validated and kept only if it holds up on fresh seeds. Accepted patches become versions, and players can join from their phones by QR code. In a recorded run, the Bari vs Real Armor matchup moved from 79.5% to 56.5% against a 60% target, and a 200-match baseline ran in about 6 seconds.',
+      hard: 'Making the simulation fully deterministic so a before and after comparison changes only the patch, and keeping AI patches safe through validation and re-testing on fresh seeds.',
+      tech: ['TypeScript', 'Node.js', 'React', 'Phaser', 'Vite', 'WebSockets', 'Google Gemini', 'MongoDB'],
+    },
+    {
       slug: 'chess-rpg',
       title: 'Chess RPG: Training Grounds',
       what: 'A chess-style RPG built at the c0mpiled-15 hackathon at Penn State: an 8x8 board with terrain and a river, RPG heroes with stats and counters, king spell cards, deck building with gem-based card progression, multiplayer, and a training ladder of AI opponents. I created the game and served as its game director and technical lead. A teammate implemented the multiplayer server code under my direction and wrote the Python AI agents.',
