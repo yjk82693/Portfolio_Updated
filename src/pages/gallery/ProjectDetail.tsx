@@ -174,6 +174,11 @@ export default function ProjectDetail() {
               devpost ↗
             </a>
           )}
+          {project.video && (
+            <a href={project.video} target="_blank" rel="noreferrer" style={{ color: '#4A90D9', border: '1px solid #4A90D9', borderRadius: 6, padding: '8px 20px', fontSize: 13, letterSpacing: 1 }}>
+              video ↗
+            </a>
+          )}
           {project.demo && (
             <a
               href={project.demo}
