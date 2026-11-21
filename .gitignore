@@ -27,3 +27,11 @@ butler_api/.venv
 __pycache__/
 *.pyc
 *.bak
+
+# Local-only blocklist for tools/pre-commit (keep sensitive words out of the public repo)
+tools/blocklist.txt
+
+# Secrets
+.env
+.env.*
+!.env.example

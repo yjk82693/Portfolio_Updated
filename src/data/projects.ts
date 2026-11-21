@@ -20,6 +20,7 @@ export type Project = {
   subtitle?: string
   award?: string
   devpost?: string
+  video?: string
   highlights?: { title: string; text: string }[]
   imageFit?: 'cover' | 'contain'
   github?: string
@@ -33,6 +34,33 @@ export type Project = {
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'balance-forge',
+    title: 'Balance-Forge',
+    subtitle: 'AI Playtesting for Game Balance',
+    blurb: 'Bots play hundreds of seeded matches, and an AI balance patch counts only if it holds up on fresh seeds.',
+    description: 'Built solo at HackPrinceton Fall 2026. Balance-Forge is an AI playtesting platform for game developers. Seeded bots play hundreds of deterministic matches, and every matchup is judged against the designer\'s intended counter chart instead of a flat 50/50. The platform diagnoses which hero is too strong or too weak, asks Google Gemini for a small numeric patch, validates it, and re-tests it on fresh seeds before accepting it. Accepted patches become versions with parent hashes, like git commits, and players can join from their phones by QR code so their matches are recorded next to the bot data. I made the design and integration decisions, and AI coding assistants helped write and review the code.',
+    category: ['fullstack', 'tools', 'hackathon'],
+    github: 'https://github.com/yjk82693/balance-forge',
+    video: 'https://youtu.be/W1cu0k9HrWQ',
+    status: 'complete',
+    image: '/screenshots/balance-forge/dashboard.png',
+    imageFit: 'contain',
+    highlights: [
+      { title: 'Deterministic simulation', text: 'Integer math, a seeded random generator, fixed 60 Hz ticks, and canonical state hashes, so the same seed and inputs replay the same match on any machine.' },
+      { title: 'Judged against design intent', text: 'Each matchup is compared with the designer\'s target win rate using Wilson 95% intervals, and is flagged only when the whole interval falls outside the target range.' },
+      { title: 'Validated AI patches', text: 'Gemini sees only aggregates and the diagnosis and returns a few integer changes on allowlisted fields. A validator checks them, and the patch is kept only if the target matchup improves on fresh seeds without making others worse.' },
+      { title: 'Measured result', text: 'In a recorded run with a live Gemini patch, the Bari vs Real Armor matchup (designer target 60%) moved from 79.5% to 56.5% on fresh seeds. A 200-match baseline ran in about 6 seconds on one laptop.' },
+      { title: 'Humans in the loop', text: 'Phones join by QR code and send the same input format as the bots, so human matches are recorded and compared with the bot data.' },
+    ],
+    screenshots: [
+      { image: '/screenshots/balance-forge/dashboard.png', caption: 'Dashboard: the most lopsided matchup with its 95% interval, the designer\'s intended result, the validated AI patch, and every matchup compared with its target.' },
+      { image: '/screenshots/balance-forge/intent.png', caption: 'Design intent: the designer sets a target win rate for each matchup (even, slight, clear, or strong) instead of a flat 50/50.' },
+      { image: '/screenshots/balance-forge/present-verdict.png', caption: 'Verdict: the patch is accepted only after it holds up on fresh seeds. Bari vs Real Armor moved from 79.5% to 56.5% against a 60% target.' },
+      { image: '/screenshots/balance-forge/versions.png', caption: 'Data versions: every candidate patch is kept as a version with its parent, and patches that did not fix the matchup are rejected and handed to a designer.' },
+      { image: '/screenshots/balance-forge/phone-controller.png', caption: 'Phone controller: players join by QR code and their matches are recorded next to the bot data.' },
+    ],
+  },
   {
     slug: 'factorypulse',
     title: 'FactoryPulse',

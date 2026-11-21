@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+"""Pre-commit guard for a public repository.
+
+Checks only the files that are staged for this commit:
+  1. blocked file names (env files, private key files)
+  2. files larger than 5 MB
+  3. secret-looking values (API keys, private keys, high-entropy password/token values)
+  4. blocklist words from tools/blocklist.txt (case-insensitive, path and content)
+
+Matched values are never printed. Only "path:line: kind" is reported.
+Python 3 standard library only.
+"""
+import math
+import os
+import re
+import subprocess
+import sys
+
+MAX_BYTES = 5 * 1024 * 1024
+
+BLOCKED_NAME_RULES = [
+    (re.compile(r"(^|/)\.env($|\.)", re.I), "env file"),
+    (re.compile(r"\.(pem|key|p12|pfx|jks|keystore)$", re.I), "key file"),
+    (re.compile(r"(^|/)id_(rsa|dsa|ecdsa|ed25519)$"), "ssh key file"),
+]
+
+SECRET_RULES = [
+    (re.compile(r"sk-ant-[A-Za-z0-9_\-]{20,}"), "Anthropic API key"),
+    (re.compile(r"(?<![A-Za-z0-9])sk-(?!ant-)(?:proj-)?[A-Za-z0-9_\-]{20,}"), "OpenAI API key"),
+    (re.compile(r"ghp_[A-Za-z0-9]{30,}"), "GitHub token"),
+    (re.compile(r"github_pat_[A-Za-z0-9_]{30,}"), "GitHub fine-grained token"),
+    (re.compile(r"(?<![A-Z0-9])(AKIA|ASIA)[0-9A-Z]{16}(?![A-Z0-9])"), "AWS access key id"),
+    (re.compile(r"AIza[0-9A-Za-z_\-]{35}"), "Google API key"),
+    (re.compile(r"-----BEGIN (?:[A-Z]+ )*PRIVATE KEY-----"), "private key block"),
+    (re.compile(r"xox[abposr]-[A-Za-z0-9\-]{10,}"), "Slack token"),
+]
+
+GENERIC_ASSIGN = re.compile(
+    r"(password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key)[\"']?\s*[:=]\s*[\"']?([^\s\"'`,;]{12,})",
+    re.I,
+)
+ENTROPY_MIN = 3.5  # bits per character
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def git(*args):
+    return subprocess.run(["git", *args], capture_output=True, check=True).stdout
+
+
+def entropy(s):
+    counts = {}
+    for ch in s:
+        counts[ch] = counts.get(ch, 0) + 1
+    n = len(s)
+    return -sum(c / n * math.log2(c / n) for c in counts.values())
+
+
+def load_blocklist(root):
+    path = os.path.join(root, "tools", "blocklist.txt")
+    if not os.path.isfile(path):
+        return None
+    words = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            w = line.strip()
+            if w and not w.startswith("#"):
+                words.append(w.lower())
+    return words
+
+
+def main():
+    root = git("rev-parse", "--show-toplevel").decode().strip()
+    out = git("diff", "--cached", "--name-only", "-z", "--diff-filter=ACMR")
+    files = [p for p in out.decode("utf-8", "replace").split("\0") if p]
+    blocklist = load_blocklist(root)
+    problems = []
+
+    if blocklist is None:
+        print("pre-commit: warning: tools/blocklist.txt not found, blocklist check skipped", file=sys.stderr)
+        blocklist = []
+
+    for path in files:
+        for rule, kind in BLOCKED_NAME_RULES:
+            if rule.search(path):
+                problems.append(f"{path}: blocked file name ({kind})")
+
+        is_blocklist_file = path.startswith("tools/blocklist")
+        low_path = path.lower()
+        if not is_blocklist_file:
+            for w in blocklist:
+                if w in low_path:
+                    problems.append(f"{path}: blocklist word in file path")
+                    break
+
+        size = int(git("cat-file", "-s", f":{path}").decode().strip())
+        if size > MAX_BYTES:
+            problems.append(f"{path}: file too large ({size // (1024 * 1024)} MB > 5 MB)")
+            continue
+
+        data = git("show", f":{path}")
+        if b"\0" in data[:8192]:
+            continue  # binary: size check only
+        text = data.decode("utf-8", "replace")
+
+        for lineno, line in enumerate(text.splitlines(), 1):
+            for rule, kind in SECRET_RULES:
+                if rule.search(line):
+                    problems.append(f"{path}:{lineno}: {kind}")
+            for m in GENERIC_ASSIGN.finditer(line):
+                if entropy(m.group(2)) >= ENTROPY_MIN:
+                    problems.append(f"{path}:{lineno}: high-entropy {m.group(1).lower()} value")
+            if not is_blocklist_file:
+                low = line.lower()
+                for w in blocklist:
+                    if w in low:
+                        problems.append(f"{path}:{lineno}: blocklist word")
+                        break
+
+    if problems:
+        print("pre-commit: commit blocked / 커밋 차단 (values are not shown):", file=sys.stderr)
+        for p in problems:
+            print(f"  {p}", file=sys.stderr)
+        print("Fix or unstage these files, then commit again.", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
