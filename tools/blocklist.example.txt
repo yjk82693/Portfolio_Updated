@@ -1,0 +1,8 @@
+# Example blocklist. install-hooks.sh copies this to tools/blocklist.txt (local only, git-ignored).
+# Put words that must never appear in this public repo: company names, internal codenames,
+# internal folder names, agent config file names. One per line, case-insensitive.
+#
+# 예시 금지어 목록. install-hooks.sh가 tools/blocklist.txt(로컬 전용, git 제외)로 복사한다.
+# 공개 저장소에 절대 나오면 안 되는 단어(회사 이름, 내부 코드명, 내부 폴더 이름, 에이전트 설정 파일 이름)를 한 줄에 하나씩 적는다.
+my-company-name
+internal-codename
